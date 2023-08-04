@@ -44,7 +44,7 @@ fun AppTopBar() {
             IconButton(onClick = { /*TODO*/ }) {
                 Icon(
                     imageVector = Icons.Filled.Notifications,
-                    contentDescription = "Notificação"
+                    contentDescription = "Notifications"
                 )
             }
         }

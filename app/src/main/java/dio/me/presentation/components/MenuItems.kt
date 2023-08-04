@@ -3,14 +3,10 @@ package dio.me.presentation.components
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -39,24 +35,21 @@ fun MenuItems(
                         width = 110.dp,
                         height = 96.dp
                     ),
-
             ) {
                 Column(
                     modifier = Modifier.fillMaxSize(),
-                    verticalArrangement =  Arrangement.Center,
+                    verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     SvgImage(
                         url = feature.icon
-                    )
-                    Icon(imageVector = Icons.Filled.Menu ,
-                        contentDescription = ""
                     )
                     Text(
                         text = feature.description,
                         modifier = Modifier.padding(top = Spacing_1)
                     )
                 }
+
             }
         }
     }

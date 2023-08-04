@@ -42,12 +42,12 @@ fun NewsPagerApp(
     modifier: Modifier = Modifier,
     news: List<News> = emptyList()
 ) {
-    Column() {
+    Column(modifier = modifier) {
         val pagerState = rememberPagerState(pageCount = {
             news.size
         })
 
-        HorizontalPager(state = pagerState) {page ->
+        HorizontalPager(state = pagerState) { page ->
             NewsItem(news = news[page])
         }
         Indicator(
@@ -63,14 +63,14 @@ fun Indicator(
     count: Int,
     pageState: PagerState,
 ) {
-    Row(modifier = Modifier
-        .fillMaxWidth()
-        .padding(Spacing_1),
-    horizontalArrangement = Arrangement.Center
-
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .padding(vertical = Spacing_1),
+        horizontalArrangement = Arrangement.Center
     ) {
         repeat(count) { iteration ->
-            val color = if(pageState.currentPage == iteration)
+            val color = if (pageState.currentPage == iteration)
                 MaterialTheme.colorScheme.primary
             else
                 Color.LightGray
@@ -82,38 +82,38 @@ fun Indicator(
                     .background(color)
                     .size(Spacing_1)
             )
-
         }
     }
+
 }
 
 @Composable
 fun NewsItem(news: News) {
-    AppCard(modifier = Modifier
-        .fillMaxWidth()
-        .height(116.dp)
+    AppCard(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(115.dp)
     ) {
-        Row(modifier = Modifier
-            .fillMaxSize()
-            .padding(Spacing_2),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
-
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(Spacing_2),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Image(
                 modifier = Modifier.weight(0.2f),
                 imageVector = Icons.Filled.AccessAlarm,
-                contentDescription = "Access Alarm"
+                contentDescription = ""
             )
             Text(
                 modifier = Modifier.weight(0.8f),
                 text = news.description,
-                style = TextStyle (
+                style = TextStyle(
                     fontSize = 14.sp,
                     fontWeight = FontWeight.W400,
                     color = Color(0xFF616161),
                     letterSpacing = 0.14.sp
-                        )
+                )
             )
         }
     }
@@ -121,7 +121,7 @@ fun NewsItem(news: News) {
 
 @Preview
 @Composable
-fun NewsPagerAppPreview() {
+fun NewsPaperAppPreview() {
     SantanderDevWeekTheme {
         NewsPagerApp(news = Mocks.newsList)
     }

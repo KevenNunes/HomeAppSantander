@@ -3,8 +3,9 @@ package dio.me.presentation
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.activity.viewModels
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -13,30 +14,37 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import dagger.hilt.android.AndroidEntryPoint
-import dio.me.presentation.theme.SantanderDevWeekTheme
 import dio.me.data.model.Response
 import dio.me.presentation.components.AppTopBar
 import dio.me.presentation.components.BalanceCard
 import dio.me.presentation.components.CreditCard
 import dio.me.presentation.components.Header
 import dio.me.presentation.components.MenuItems
+import dio.me.presentation.components.NewsPagerApp
+import dio.me.presentation.theme.SantanderDevWeekTheme
 import dio.me.presentation.theme.Spacing_2
 import dio.me.presentation.theme.Spacing_3
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    private val viewModel by viewModels<MainViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val state by viewModel.state.collectAsState()
             SantanderDevWeekTheme() {
-                MainApp()
+                MainApp(
+                    response = state.response
+                )
             }
         }
     }
@@ -50,7 +58,8 @@ fun MainApp(response: Response? = null) =
             topBar = { AppTopBar() },
             content = { innerPadding ->
                 ConstraintLayout(modifier = Modifier.padding(innerPadding)) {
-                     val (header, spacer, balanceCard, menuItems, creditCard) = createRefs()
+
+                    val (header, spacer, balanceCard, menuItems, creditCard, news) = createRefs()
 
                     Header(
                         modifier = Modifier.constrainAs(header) {
@@ -75,7 +84,7 @@ fun MainApp(response: Response? = null) =
                             top.linkTo(spacer.top)
                         },
                         balance = response?.account?.balance ?: 0.0,
-                        limit = response?.account?.limit ?: 0.0,
+                        limit = response?.account?.limit ?: 0.0
                     )
 
                     MenuItems(
@@ -93,11 +102,25 @@ fun MainApp(response: Response? = null) =
 
                     CreditCard(
                         modifier = Modifier
-                            .padding(horizontal = Spacing_2)
+                            .padding(
+                                horizontal = Spacing_2
+                            )
                             .constrainAs(creditCard) {
                                 top.linkTo(menuItems.bottom)
                             },
-                        number = response?.card?.number ?: "",
+                        number = response?.card?.number ?: ""
+                    )
+
+                    NewsPagerApp(
+                        news = response?.news ?: emptyList(),
+                        modifier = Modifier
+                            .padding(
+                                horizontal = Spacing_2,
+                                vertical = Spacing_2
+                            )
+                            .constrainAs(news) {
+                                top.linkTo(creditCard.bottom)
+                            }
                     )
 
                 }
